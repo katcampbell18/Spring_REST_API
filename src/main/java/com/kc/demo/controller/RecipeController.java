@@ -6,7 +6,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.kc.demo.service.RecipeService;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -21,18 +23,28 @@ public class RecipeController {
         return ResponseEntity.ok().body(this.recipeService.getRecipes());
     }
 
-    @GetMapping("/recipes/{id}")
+    @GetMapping("/detail/{id}")
     public ResponseEntity<Recipe> getRecipeById(@PathVariable long id) {
         return ResponseEntity.ok().body(this.recipeService.getRecipeById(id));
     }
 
-    @PutMapping("/recipes/{id}")
+    @PostMapping("/add")
+    public ResponseEntity<Recipe> addRecipe(@RequestBody Recipe recipe) {
+        Recipe newRecipe = recipeService.createRecipe(recipe);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(newRecipe.getId())
+                .toUri();
+        return ResponseEntity.created(uri).body(newRecipe);
+    }
+
+    @PutMapping("/update/{id}")
     public ResponseEntity<Recipe> updateRecipe(@PathVariable long id, @RequestBody Recipe recipe) {
         recipe.setId(id);
         return ResponseEntity.ok().body(this.recipeService.updateRecipe(recipe));
     }
 
-    @DeleteMapping("/recipes/{id}")
+    @DeleteMapping("/delete/{id}")
     public HttpStatus deleteRecipe(@PathVariable long id) {
      this.recipeService.deleteRecipe(id);
      return HttpStatus.OK;

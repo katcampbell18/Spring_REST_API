@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.kc.demo.repository.RecipeRepository;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -43,6 +42,15 @@ public class RecipeService {
         }
     }
         return null;
+    }
+
+    public Recipe createRecipe(Recipe recipe) {
+        Recipe newRecipe = new Recipe(
+                recipe.getName(),
+                recipe.getIngredients(),
+                recipe.getInstructions()
+        );
+        return recipeRepository.save(newRecipe);
     }
 
     public Recipe updateRecipe(Recipe recipe) {
