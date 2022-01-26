@@ -1,9 +1,9 @@
-package com.kc.demo;
+package com.kc.springrestapi;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kc.demo.entity.Recipe;
-import com.kc.demo.service.RecipeService;
+import com.kc.springrestapi.entity.Recipe;
+import com.kc.springrestapi.service.RecipeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -16,13 +16,13 @@ import java.io.IOException;
 import java.util.List;
 
 @SpringBootApplication
-//@EnableJpaRepositories("com.kc.repository")
-public class DemoApplication {
+public class SpringRestApplication {
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) {
 
-		SpringApplication.run(DemoApplication.class, args);
+		SpringApplication.run(SpringRestApplication.class, args);
 	}
+
 
 	@Bean
 	@Autowired

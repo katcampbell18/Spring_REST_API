@@ -6,7 +6,7 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.6.1</version>
-		<relativePath/> <!-- lookup parent from com.kc.demo.repository -->
+		<relativePath/> <!-- lookup parent from com.kc.springrestapi.repository -->
 	</parent>
 	<groupId>com.kc</groupId>
 	<artifactId>demo</artifactId>
@@ -61,7 +61,12 @@
 			<artifactId>jackson-databind</artifactId>
 			<version>2.13.0</version>
 		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 
 	<build>
 		<plugins>

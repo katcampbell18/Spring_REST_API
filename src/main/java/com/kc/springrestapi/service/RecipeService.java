@@ -1,10 +1,11 @@
-package com.kc.demo.service;
+package com.kc.springrestapi.service;
 
-import com.kc.demo.entity.Recipe;
-import com.kc.demo.utils.RecipeNotFoundException;
+import com.kc.springrestapi.entity.Recipe;
+import com.kc.springrestapi.utils.RecipeAlreadyExistsException;
+import com.kc.springrestapi.utils.RecipeNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.kc.demo.repository.RecipeRepository;
+import com.kc.springrestapi.repository.RecipeRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +46,13 @@ public class RecipeService {
     }
 
     public Recipe createRecipe(Recipe recipe) {
+        if(recipeRepository.existsById(recipe.getId())) {
+            try {
+                throw new RecipeAlreadyExistsException("Recipe already exists with id: " + recipe.getId());
+            } catch (RecipeAlreadyExistsException e) {
+                e.printStackTrace();
+            }
+        }
         Recipe newRecipe = new Recipe(
                 recipe.getName(),
                 recipe.getIngredients(),

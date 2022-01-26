@@ -1,11 +1,11 @@
-package com.kc.demo.controller;
+package com.kc.springrestapi.controller;
 
-import com.kc.demo.entity.Recipe;
+import com.kc.springrestapi.entity.Recipe;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.kc.demo.service.RecipeService;
+import com.kc.springrestapi.service.RecipeService;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;

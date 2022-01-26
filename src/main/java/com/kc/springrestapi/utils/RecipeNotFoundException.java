@@ -1,4 +1,4 @@
-package com.kc.demo.utils;
+package com.kc.springrestapi.utils;
 
 public class RecipeNotFoundException extends Exception {
     public RecipeNotFoundException(String message) {

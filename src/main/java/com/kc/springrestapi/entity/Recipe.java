@@ -1,4 +1,4 @@
-package com.kc.demo.entity;
+package com.kc.springrestapi.entity;
 
 
 import javax.persistence.*;
@@ -24,8 +24,14 @@ public class Recipe {
     public Recipe() {
     }
 
-    public Recipe(String name, Set<String> ingredients, Set<String> instructions) {
+    public Recipe(Long id, String name, Set<String> ingredients, Set<String> instructions) {
         this.id = id;
+        this.name = name;
+        this.ingredients = ingredients;
+        this.instructions = instructions;
+    }
+
+    public Recipe(String name, Set<String> ingredients, Set<String> instructions) {
         this.name = name;
         this.ingredients = ingredients;
         this.instructions = instructions;

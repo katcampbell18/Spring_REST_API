@@ -1,6 +1,6 @@
-package com.kc.demo.repository;
+package com.kc.springrestapi.repository;
 
-import com.kc.demo.entity.Recipe;
+import com.kc.springrestapi.entity.Recipe;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
