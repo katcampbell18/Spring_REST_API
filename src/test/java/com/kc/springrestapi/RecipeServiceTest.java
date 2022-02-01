@@ -3,6 +3,8 @@ package com.kc.springrestapi;
 import com.kc.springrestapi.entity.Recipe;
 import com.kc.springrestapi.repository.RecipeRepository;
 import com.kc.springrestapi.service.RecipeService;
+import com.kc.springrestapi.utils.RecipeAlreadyExistsException;
+import com.kc.springrestapi.utils.RecipeNotFoundException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,6 +21,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.ArgumentMatchers.any;
@@ -64,17 +67,6 @@ public class RecipeServiceTest {
     }
 
     @Test
-    public void savedRecipe_SuccessTest() {
-        recipe1.setId(1L);
-        when(recipeRepository.save(any(Recipe.class))).thenReturn(recipe1);
-
-        Recipe savedRecipe = recipeService.createRecipe(recipe1);
-
-        assertThat(savedRecipe.getName()).isNotNull();
-        verify(recipeRepository, times(1)).save(any(Recipe.class));
-    }
-
-    @Test
     public void recipesExistInDb_SuccessTest() {
         recipeRepository.save(recipe1);
         when(recipeRepository.findAll()).thenReturn(recipeList);
@@ -93,6 +85,17 @@ public class RecipeServiceTest {
         when(recipeRepository.findById(id)).thenReturn(Optional.of(recipe1));
 
         assertThat(recipeService.getRecipeById(recipe1.getId())).isEqualTo(recipe1);
+    }
+
+    @Test
+    public void createRecipe_SuccessTest() {
+        recipe1.setId(1L);
+        when(recipeRepository.save(any(Recipe.class))).thenReturn(recipe1);
+
+        Recipe savedRecipe = recipeService.createRecipe(recipe1);
+
+        assertThat(savedRecipe.getName()).isNotNull();
+        verify(recipeRepository, times(1)).save(any(Recipe.class));
     }
 
     @Test
@@ -116,5 +119,29 @@ public class RecipeServiceTest {
         recipeService.deleteRecipe(recipe2.getId());
 
         assertFalse(recipeRepository.existsById(recipe2.getId()));
+    }
+
+    @Test
+    public void recipeIdAlreadyExists_ExceptionTest() {
+        recipe1.setId(1L);
+        recipeRepository.save(recipe1);
+        recipe2.setId(1L);
+        when(recipeRepository.existsById(recipe1.getId())).thenThrow(new RecipeAlreadyExistsException(
+                "Recipe already exists with id: " + recipe2.getId()));
+
+        Exception exception = assertThrows(RecipeAlreadyExistsException.class, () ->
+                recipeService.createRecipe(recipe2));
+        assertEquals("Recipe already exists with id: 1", exception.getMessage());
+    }
+
+    @Test
+    public void recipeNotFoundById_ExceptionTest() {
+        Long recipeId = 3L;
+        when(recipeService.getRecipeById(recipeId)).thenThrow(new RecipeNotFoundException(
+                "Recipe not found with id: " + recipeId));
+
+        Exception exception = assertThrows(RecipeNotFoundException.class, () ->
+                recipeService.getRecipeById(recipeId));
+        assertEquals("Recipe not found with id: 3", exception.getMessage());
     }
 }
